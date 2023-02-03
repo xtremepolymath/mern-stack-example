@@ -1,0 +1,22 @@
+Note, these steps are for deploying a new app version onto gcloud. For normal testing, cd to server and type "npm run local-dev"
+
+1. Ensure Dockerfile is using same Node Version
+
+2. Run this code to build image:
+docker build -t kaleido-gcloud-image .
+
+3. Make sure the image runs by running this command:
+docker run -d -p 80:80 --name kaleido-stack kaleido-gcloud-image
+
+4. Site should be running on http://localhost, check for errors
+
+5. Tag the image with the Gcloud Artifact Registry name (change version number when feels appropriate):
+
+docker tag kaleido-gcloud-image us-west1-docker.pkg.dev/kaleido-rpg/kaleido-image-registry/kaleido-gcloud-image:v0.5
+
+    // ^Template 
+    //docker tag [SOURCE_IMAGE] [HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG]
+
+6. Push image to artifact registry:
+
+docker push us-west1-docker.pkg.dev/kaleido-rpg/kaleido-image-registry/kaleido-gcloud-image
